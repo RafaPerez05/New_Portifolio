@@ -13,41 +13,14 @@ import {
   Cloud,
   Zap,
   Settings,
-  Languages // ADICIONE Languages
+  Workflow
 } from 'lucide-react'
 
-import { useLanguage } from '../components/ui/languageContext' // importe o hook
-
-const texts = {
-  en: {
-    TechnicalSkills: "Technical Skills",
-    Technologiesandtools: "Technologies and tools I use to bring ideas to life",
-    CoreTechnologies: "Core Technologies",
-    DevelopmentTools: "Development Tools",
-    Frontend: "Frontend Development",
-    FrontendDesc: "Creating engaging user interfaces with modern frameworks",
-    Backend: "Backend Development",
-    BackendDesc: "Building robust server-side applications and APIs",
-    Mobile: "Mobile Development",
-    MobileDesc: "Developing cross-platform mobile applications",
-  },
-  pt: {
-    TechnicalSkills: "Habilidades Técnicas",
-    Technologiesandtools: "Tecnologias e ferramentas que utilizo para dar vida às ideias",
-    CoreTechnologies: "Tecnologias Principais",
-    DevelopmentTools: "Ferramentas de Desenvolvimento",
-    Frontend: "Desenvolvimento Frontend",
-    FrontendDesc: "Criando interfaces envolventes com frameworks modernos",
-    Backend: "Desenvolvimento Backend",
-    BackendDesc: "Construindo aplicações robustas e APIs",
-    Mobile: "Desenvolvimento Mobile",
-    MobileDesc: "Desenvolvendo aplicativos móveis multiplataforma",
-  }
-}
+import { useLanguage } from '../components/ui/languageContext'
 
 const Skills = () => {
-  const { language, toggleLanguage } = useLanguage()
-  const t = texts[language]
+  const { getSection } = useLanguage()
+  const t = getSection('skills')
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.2 })
 
@@ -65,8 +38,9 @@ const Skills = () => {
   const softwareSkills = [
     { name: 'Git & GitHub', icon: GitBranch, level: 85 },
     { name: 'Docker', icon: Cloud, level: 70 },
-    { name: 'VS Code', icon: Monitor, level: 95 },
+    { name: 'Cursor AI', icon: Monitor, level: 95 },
     { name: 'Figma', icon: Layers, level: 88 },
+    { name: 'N8n', icon: Workflow, level: 80 },
   ]
 
   const containerVariants = {

@@ -3,71 +3,13 @@ import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { GraduationCap, Code, Palette, Users, Lightbulb, Zap } from 'lucide-react'
-import { useLanguage } from '../components/ui/languageContext' // importe o hook
+import { useLanguage } from '../components/ui/languageContext'
 
-// MOVA O OBJETO texts PARA FORA DO COMPONENTE
 const skillsIcons = { Users, Lightbulb, Palette, Zap, Code }
 
-const texts = {
-  en: {
-    aboutMe: "About Me",
-    getToKnow: "Get to know the person behind the code",
-    myJourney: "My Journey",
-    journey1: "Graduated in Systems Analysis and Development from Fatec de Presidente Prudente, I've developed a strong foundation in both technical and design aspects of software development.",
-    journey2: "As a Full Stack Developer and UX Design Specialist, my passion for new technologies and curiosity drives me to constantly evolve in the technology field.",
-    journey3: "I believe that great software comes from understanding both the technical implementation and the human experience. This philosophy guides my approach to every project I work on.",
-    interpersonal: "Interpersonal Skills",
-    stats: [
-      { number: '20', label: 'Years', suffix: ' ' },
-      { number: '7', label: 'Projects', suffix: '+' },
-      { number: '2', label: 'Years', suffix: '+', sublabel: 'Experience' },
-      { number: '100', label: 'Passion', suffix: '%' },
-    ],
-    skills: [
-      { icon: 'Users', title: 'Effective Communication', description: 'Clear and impactful communication with teams and clients' },
-      { icon: 'Lightbulb', title: 'Problem Solving', description: 'Creative solutions to complex technical challenges' },
-      { icon: 'Palette', title: 'Creativity', description: 'Innovative design thinking and artistic vision' },
-      { icon: 'Users', title: 'Empathy', description: 'Understanding user needs and team dynamics' },
-      { icon: 'Zap', title: 'Flexibility', description: 'Adapting quickly to new technologies and methodologies' },
-      { icon: 'Code', title: 'Proactivity', description: 'Taking initiative and driving projects forward' },
-    ],
-    degree: "Systems Analysis and Development",
-    college: "Fatec de Presidente Prudente",
-    age: "20 years old",
-    name: "Rafael Perez Silva"
-  },
-  pt: {
-    aboutMe: "Sobre Mim",
-    getToKnow: "Conheça a pessoa por trás do código",
-    myJourney: "Minha Jornada",
-    journey1: "Graduado em Análise e Desenvolvimento de Sistemas pela Fatec de Presidente Prudente, desenvolvi uma base sólida tanto em aspectos técnicos quanto de design de software.",
-    journey2: "Como Desenvolvedor Full Stack e Especialista em UX Design, minha paixão por novas tecnologias e curiosidade me impulsionam a evoluir constantemente no campo da tecnologia.",
-    journey3: "Acredito que um ótimo software nasce da compreensão tanto da implementação técnica quanto da experiência humana. Essa filosofia guia minha abordagem em cada projeto.",
-    interpersonal: "Habilidades Interpessoais",
-    stats: [
-      { number: '20', label: 'Anos', suffix: ' ' },
-      { number: '7', label: 'Projetos', suffix: '+' },
-      { number: '2', label: 'Anos', suffix: '+', sublabel: 'Experiência' },
-      { number: '100', label: 'Paixão', suffix: '%' },
-    ],
-    skills: [
-      { icon: 'Users', title: 'Comunicação Eficaz', description: 'Comunicação clara e impactante com equipes e clientes' },
-      { icon: 'Lightbulb', title: 'Resolução de Problemas', description: 'Soluções criativas para desafios técnicos complexos' },
-      { icon: 'Palette', title: 'Criatividade', description: 'Pensamento inovador em design e visão artística' },
-      { icon: 'Users', title: 'Empatia', description: 'Compreensão das necessidades dos usuários e da equipe' },
-      { icon: 'Zap', title: 'Flexibilidade', description: 'Adaptação rápida a novas tecnologias e metodologias' },
-      { icon: 'Code', title: 'Proatividade', description: 'Iniciativa e impulsionamento de projetos' },
-    ],
-    degree: "Análise e Desenvolvimento de Sistemas",
-    college: "Fatec de Presidente Prudente",
-    age: "20 anos",
-    name: "Rafael Perez Silva"
-  }
-}
-
 const About = () => {
-  const { language } = useLanguage()
-  const t = texts[language]
+  const { getSection } = useLanguage()
+  const t = getSection('about')
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.2 })
 

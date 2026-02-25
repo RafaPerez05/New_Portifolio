@@ -1,140 +1,48 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { ExternalLink, Github, Smartphone, Globe, Palette, GraduationCap, ShoppingCart, Languages } from 'lucide-react'
+import { ExternalLink, Github, Smartphone, Globe, Palette, GraduationCap, ShoppingCart } from 'lucide-react'
 import { useLanguage } from '../components/ui/languageContext'
-
-const texts = {
-  en: {
-    title: "My Projects",
-    subtitle: "A collection of my work showcasing development skills and creative design",
-    categories: ['All', 'Designs', 'Projects'],
-    viewCode: "View Code →",
-    designProject: "Design Project",
-    learnMore: "Learn More →",
-    moreTech: (n) => `+${n} more`,
-    ctaTitle: "Want to see more of my work?",
-    ctaDesc: "Check out my GitHub profile for more projects and contributions to the open-source community.",
-    visitGithub: "Visit GitHub Profile"
-  },
-  pt: {
-    title: "Meus Projetos",
-    subtitle: "Uma coleção dos meus trabalhos mostrando habilidades de desenvolvimento e design criativo",
-    categories: ['Todos', 'Designs', 'Projetos'],
-    viewCode: "Ver Código →",
-    designProject: "Projeto de Design",
-    learnMore: "Saiba Mais →",
-    moreTech: (n) => `+${n} mais`,
-    ctaTitle: "Quer ver mais do meu trabalho?",
-    ctaDesc: "Veja meu perfil no GitHub para mais projetos e contribuições na comunidade open-source.",
-    visitGithub: "Visitar Perfil no GitHub"
-  }
-}
+import type { Translations } from '../translations'
 
 const Projects = () => {
-  const { language, toggleLanguage } = useLanguage()
-  const t = texts[language]
+  const { language, getSection } = useLanguage()
+  const t = getSection('projects') as Translations['projects']
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.2 })
+  // amount: 0 = dispara assim que qualquer parte da seção entra na viewport (evita seção “invisível” no mobile)
+  const isInView = useInView(ref, { once: true, amount: 0 })
   const [activeFilter, setActiveFilter] = useState(t.categories[0])
 
-  const projects = [
-    {
-      id: 0,
-      name: 'Educational blog for Energisa',
-      description: 'Educational blog developed for Electricity Consumer Councils Concess',
-      image: '/images/concess.png',
-      technologies: ['PHP', 'JavaScript', 'MYSQL', 'MVC Pattern'],
-      site: 'https://www.concess.com.br/',
-      category: 'Projects',
-      icon: Globe,
-      featured: true
-    },
-    {
-      id: 1,
-      name: 'Mobile Agricultural Tracking App',
-      description: 'React Native application for agricultural tracking with real-time monitoring capabilities and farmer-friendly interface.',
-      image: '/images/rastreia_agro.png',
-      technologies: ['React Native', 'JavaScript', 'Mobile APIs', 'Agriculture Tech'],
-      github: 'https://github.com/RafaPerez05/-rastreiaagro',
-      category: 'Projects',
-      icon: Smartphone,
-      featured: true
-    },
-    {
-      id: 2,
-      name: 'Orbicode Page',
-      description: 'Page created for a startup Im a partner in',
-      image: '/images/orbicode.png',
-      technologies: ['HTML', 'CSS', 'JavaScript', 'UI/UX'],
-      category: 'Projects',
-      site: 'https://orbicode.com.br/',
-      icon: Globe,
-      featured: true
-    },
-    {
-      id: 3,
-      name: 'E-commerce Platform',
-      description: 'Full-featured sales website developed using modeling techniques and design patterns for scalable architecture.',
-      image: '/images/tocaDoBoi.png',
-      technologies: ['PHP', 'MySQL', 'Design Patterns', 'E-commerce'],
-      github: 'https://github.com/RafaPerez05/TocadoBoi',
-      category: 'Projects',
-      icon: ShoppingCart,
-      featured: true
-    },
-    {
-      id: 4,
-      name: 'Educational Data Structures Site',
-      description: 'Interactive educational website developed to teach data structures with visual examples and exercises.',
-      image: '/images/ed.jpg',
-      technologies: ['Web Development', 'Educational Tech', 'Interactive Learning'],
-      github: 'https://github.com/Yan0606/Ambiente-E.D',
-      category: 'Projects',
-      icon: GraduationCap,
-      featured: true
-    },
-    {
-      id: 5,
-      name: 'PHP Sales Platform',
-      description: 'Sales website prototype built with PHP following MVC pattern for clean, maintainable code architecture.',
-      image: '/images/ecommerce-mockup.png',
-      technologies: ['PHP', 'MVC Pattern', 'Web Development', 'Backend'],
-      github: 'https://github.com/RafaPerez05/xhopii-final-v3',
-      category: 'Projects',
-      icon: Globe,
-      featured: false
-    },
-    {
-      id: 6,
-      name: 'Event Promotional Flyer',
-      description: 'Creative promotional flyer designed for Aguardente brand presence at events with modern visual appeal.',
-      image: '/images/FolderGolden.jpg',
-      technologies: ['Graphic Design', 'Brand Identity', 'Print Design'],
-      category: 'Designs',
-      icon: Palette,
-      featured: false
-    },
-    {
-      id: 7,
-      name: 'Social Media Flyer',
-      description: 'Eye-catching social media flyer created for a tereré brand to enhance their social media presence.',
-      image: '/images/PropagandaBATATEC.jpg',
-      technologies: ['Social Media Design', 'Brand Marketing', 'Visual Design'],
-      category: 'Designs',
-      icon: Palette,
-      featured: false
-    }
+  // Dados estáticos (imagem, links, tecnologias). Nome e descrição vêm das traduções (t.list).
+  const projectsBase = [
+    { id: 0, image: '/images/concess.png', technologies: ['PHP', 'JavaScript', 'MYSQL', 'MVC Pattern'], site: 'https://www.concess.com.br/', category: 'Projects' as const, icon: Globe, featured: true },
+    { id: 1, image: '/images/rastreia_agro.png', technologies: ['React Native', 'JavaScript', 'Mobile APIs', 'Agriculture Tech'], github: 'https://github.com/RafaPerez05/-rastreiaagro', site: 'https://www.figma.com/proto/y2IZy9BP577fjhPkRhLw9p/RastreiaAgro?page-id=33%3A154&node-id=1185-5917&node-type=CANVAS&viewport=1050%2C342%2C0.34&t=1c9LzPsGpij1RiUM-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1185%3A5917', category: 'Projects' as const, icon: Smartphone, featured: true },
+    { id: 2, image: '/images/orbicode.png', technologies: ['HTML', 'CSS', 'JavaScript', 'UI/UX'], site: 'https://orbicode.com.br/', category: 'Projects' as const, icon: Globe, featured: true },
+    { id: 8, image: '/images/taxthrone.png', technologies: ['Web Development', 'UI/UX', 'Responsive Design'], site: 'https://taxthrone.com.br/', category: 'Projects' as const, icon: Globe, featured: true },
+    { id: 9, image: '/images/advmalcon.png', technologies: ['WordPress', 'PHP', 'UI/UX', 'Web'], site: 'https://advmalconcappellari.com/', category: 'Projects' as const, icon: Globe, featured: true },
+    { id: 3, image: '/images/tocaDoBoi.png', technologies: ['PHP', 'MySQL', 'Design Patterns', 'E-commerce'], github: 'https://github.com/RafaPerez05/TocadoBoi', category: 'Projects' as const, icon: ShoppingCart, featured: true },
+    { id: 4, image: '/images/ed.jpg', technologies: ['Web Development', 'Educational Tech', 'Interactive Learning'], github: 'https://github.com/Yan0606/Ambiente-E.D', category: 'Projects' as const, icon: GraduationCap, featured: true },
+    { id: 5, image: '/images/ecommerce-mockup.png', technologies: ['PHP', 'MVC Pattern', 'Web Development', 'Backend'], github: 'https://github.com/RafaPerez05/xhopii-final-v3', category: 'Projects' as const, icon: Globe, featured: false },
+    { id: 6, image: '/images/FolderGolden.jpg', technologies: ['Graphic Design', 'Brand Identity', 'Print Design'], category: 'Designs' as const, icon: Palette, featured: false },
+    { id: 7, image: '/images/PropagandaBATATEC.jpg', technologies: ['Social Media Design', 'Brand Marketing', 'Visual Design'], category: 'Designs' as const, icon: Palette, featured: false },
   ]
+  const projectList = t.list || []
+  const projects = projectsBase.map((p, i) => ({
+    ...p,
+    name: projectList[i]?.name ?? '',
+    description: projectList[i]?.description ?? '',
+  }))
 
 
-  // Atualiza o filtro quando o idioma mudar
+  // Atualiza o filtro quando o idioma ou as categorias traduzidas mudarem
   useEffect(() => {
     setActiveFilter(t.categories[0])
-  }, [language])
+  }, [language, t.categories])
 
+  // Categoria canônica: índice 1 = Design, 2 = Projetos/Projects
+  const canonicalCategory = activeFilter === t.categories[1] ? 'Designs' : 'Projects'
   const filteredProjects = activeFilter === t.categories[0]
     ? projects
-    : projects.filter(project => project.category === activeFilter)
+    : projects.filter(project => project.category === canonicalCategory)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -156,14 +64,14 @@ const Projects = () => {
   }
 
   return (
-    <section id="projects" ref={ref} className="py-20 relative">
+    <section id="projects" ref={ref} className="py-20 relative overflow-visible min-h-[400px]">
       <div className="container mx-auto px-6">
 
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="max-w-7xl mx-auto"
+          className="max-w-7xl mx-auto w-full"
         >
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
@@ -183,11 +91,10 @@ const Projects = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setActiveFilter(category)}
-                  className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
-                    activeFilter === category
-                      ? 'bg-gradient-cyber text-white shadow-lg'
-                      : 'border border-cyber-blue text-cyber-blue hover:bg-cyber-blue hover:text-white'
-                  }`}
+                  className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${activeFilter === category
+                    ? 'bg-gradient-cyber text-white shadow-lg'
+                    : 'border border-cyber-blue text-cyber-blue hover:bg-cyber-blue hover:text-white'
+                    }`}
                 >
                   {category}
                 </motion.button>
@@ -196,7 +103,7 @@ const Projects = () => {
           </motion.div>
 
           {/* Projects Grid */}
-          <motion.div 
+          <motion.div
             layout
             className="grid lg:grid-cols-3 md:grid-cols-2 gap-8"
           >
@@ -206,9 +113,8 @@ const Projects = () => {
                 layout
                 variants={itemVariants}
                 whileHover={{ y: -10, scale: 1.02 }}
-                className={`glass rounded-2xl overflow-hidden group cursor-pointer transition-all duration-500 ${
-                  project.featured ? 'lg:col-span-1 md:col-span-1' : ''
-                }`}
+                className={`glass rounded-2xl overflow-hidden group cursor-pointer transition-all duration-500 ${project.featured ? 'lg:col-span-1 md:col-span-1' : ''
+                  }`}
               >
                 {/* Project Image */}
                 <div className="relative h-48 overflow-hidden">
@@ -233,16 +139,16 @@ const Projects = () => {
                             <Github size={16} />
                           </motion.a>
                         )}
-                        {project.site &&( 
+                        {project.site && (
                           <motion.a
-                          href={project.site}
-                          target="_blank"
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="p-2 bg-cyber-purple/80 rounded-full text-white hover:bg-cyber-purple transition-colors duration-300"
-                        >
-                          <ExternalLink size={16} />
-                        </motion.a>)}
+                            href={project.site}
+                            target="_blank"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="p-2 bg-cyber-purple/80 rounded-full text-white hover:bg-cyber-purple transition-colors duration-300"
+                          >
+                            <ExternalLink size={16} />
+                          </motion.a>)}
                       </div>
                     </div>
                   </div>
@@ -279,14 +185,14 @@ const Projects = () => {
                     ))}
                     {project.technologies.length > 3 && (
                       <span className="px-2 py-1 bg-cyber-gray text-cyber-off-white text-xs rounded">
-                        {t.moreTech(project.technologies.length - 3)}
+                        {`+${project.technologies.length - 3} ${t.moreTechSuffix}`}
                       </span>
                     )}
                   </div>
 
                   {/* Actions */}
                   <div className="flex justify-between items-center pt-4 border-t border-cyber-gray">
-                    {project.github || project.site? (
+                    {project.github || project.site ? (
                       <a
                         href={project.github}
                         target="_blank"
@@ -300,14 +206,14 @@ const Projects = () => {
                         {t.designProject}
                       </span>
                     )}
-                      <a
-                        href={project.site}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-cyber-green hover:text-cyber-blue transition-colors duration-300 text-sm font-medium"
-                      >
-                        {t.learnMore}
-                      </a>
+                    <a
+                      href={project.site}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-cyber-green hover:text-cyber-blue transition-colors duration-300 text-sm font-medium"
+                    >
+                      {t.learnMore}
+                    </a>
                   </div>
                 </div>
               </motion.div>
@@ -315,7 +221,7 @@ const Projects = () => {
           </motion.div>
 
           {/* CTA Section */}
-          <motion.div 
+          <motion.div
             variants={itemVariants}
             className="mt-16 text-center"
           >

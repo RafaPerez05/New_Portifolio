@@ -6,24 +6,8 @@ import { useLanguage } from '../components/ui/languageContext' // ajuste o camin
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-const { language, toggleLanguage } = useLanguage()
-  // Textos dos menus em ambos idiomas
-  const navLabels = {
-    en: [
-      { href: '#home', label: 'Home' },
-      { href: '#about', label: 'About' },
-      { href: '#skills', label: 'Skills' },
-      { href: '#projects', label: 'Projects' },
-      { href: '#contact', label: 'Contact' },
-    ],
-    pt: [
-      { href: '#home', label: 'Início' },
-      { href: '#about', label: 'Sobre' },
-      { href: '#skills', label: 'Habilidades' },
-      { href: '#projects', label: 'Projetos' },
-      { href: '#contact', label: 'Contato' },
-    ]
-  }
+const { language, toggleLanguage, getSection, isLoadingTranslations, translationProgress } = useLanguage()
+  const navLabels = getSection('navLabels') as { href: string; label: string }[]
 
 
   useEffect(() => {
@@ -66,7 +50,7 @@ const { language, toggleLanguage } = useLanguage()
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navLabels[language].map((item, index) => (
+            {navLabels.map((item, index) => (
               <motion.button
                 key={item.href}
                 initial={{ opacity: 0, y: -20 }}
@@ -86,10 +70,12 @@ const { language, toggleLanguage } = useLanguage()
             {/* Botão de idioma */}
             <button
               onClick={toggleLanguage}
-              className="border border-cyber-blue px-3 py-1 rounded flex items-center text-cyber-blue hover:bg-cyber-blue hover:text-black transition-all duration-300"
+              disabled={isLoadingTranslations}
+              title={isLoadingTranslations && translationProgress ? `Traduzindo... ${translationProgress.done}/${translationProgress.total}` : undefined}
+              className="border border-cyber-blue px-3 py-1 rounded flex items-center text-cyber-blue hover:bg-cyber-blue hover:text-black transition-all duration-300 disabled:opacity-70"
             >
               <Languages className="w-4 h-4 mr-2" />
-              {language.toUpperCase()}
+              {isLoadingTranslations ? '...' : language.toUpperCase()}
             </button>
           </div>
 
@@ -97,10 +83,11 @@ const { language, toggleLanguage } = useLanguage()
           <div className="flex items-center space-x-4 md:hidden">
             <button
               onClick={toggleLanguage}
-              className="border border-cyber-blue px-2 py-1 rounded flex items-center text-cyber-blue hover:bg-cyber-blue hover:text-black transition-all duration-300"
+              disabled={isLoadingTranslations}
+              className="border border-cyber-blue px-2 py-1 rounded flex items-center text-cyber-blue hover:bg-cyber-blue hover:text-black transition-all duration-300 disabled:opacity-70"
             >
               <Languages className="w-4 h-4 mr-1" />
-              {language.toUpperCase()}
+              {isLoadingTranslations ? '...' : language.toUpperCase()}
             </button>
             <motion.button
               whileTap={{ scale: 0.95 }}
@@ -123,7 +110,7 @@ const { language, toggleLanguage } = useLanguage()
           className="md:hidden overflow-hidden"
         >
           <div className="pt-4 pb-2 space-y-2">
-            {navLabels[language].map((item, index) => (
+            {navLabels.map((item, index) => (
               <motion.button
                 key={item.href}
                 initial={{ opacity: 0, x: -20 }}

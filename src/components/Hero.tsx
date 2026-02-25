@@ -3,40 +3,23 @@ import { motion } from 'framer-motion'
 import { ChevronDown, Github, Instagram, Code2 } from 'lucide-react'
 import { useLanguage } from '../components/ui/languageContext'
 
-const texts = {
-  en: {
-    greeting: "Hello, I'm",
-    description: "Technology-passionate professional with expertise in full-stack development and UX design. Always seeking to evolve and innovate in the tech world.",
-    explore: "Explore My Work",
-    contact: "Get In Touch",
-    roles: [
-      'Full Stack Developer',
-      'UX Design Specialist',
-      'React Native Expert',
-      'Technology Enthusiast'
-    ]
-  },
-  pt: {
-    greeting: "Olá, eu sou",
-    description: "Profissional apaixonado por tecnologia, com experiência em desenvolvimento full-stack e UX design. Sempre buscando evoluir e inovar no mundo tech.",
-    explore: "Veja Meu Trabalho",
-    contact: "Fale Comigo",
-    roles: [
-      'Desenvolvedor Full Stack',
-      'Especialista em UX Design',
-      'Expert em React Native',
-      'Entusiasta de Tecnologia'
-    ]
-  }
-}
-
 const Hero = () => {
-  const { language } = useLanguage()
-  const t = texts[language]
+  const { getSection } = useLanguage()
+  const t = getSection('hero')
 
   const [text, setText] = useState('')
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [showScrollButton, setShowScrollButton] = useState(true)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollButton(window.scrollY < 80)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
   
   useEffect(() => {
     const typeSpeed = isDeleting ? 50 : 100
@@ -91,7 +74,7 @@ const Hero = () => {
       </div>
 
       {/* Hero content */}
-      <div className="container mx-auto px-6 text-center relative z-10">
+      <div className="container mx-auto px-6 text-center relative z-10 mt-20 mb-20">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -211,14 +194,14 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator - fixo no centro inferior da tela; some ao rolar */}
         <motion.button
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1.4 }}
+          animate={{ opacity: showScrollButton ? 1 : 0 }}
+          transition={{ duration: 0.25 }}
           whileHover={{ scale: 1.1 }}
           onClick={scrollToNext}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-cyber-blue animate-bounce cursor-pointer"
+          className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-20 text-cyber-blue animate-bounce cursor-pointer ${!showScrollButton ? 'pointer-events-none' : ''}`}
         >
           <ChevronDown size={32} />
         </motion.button>

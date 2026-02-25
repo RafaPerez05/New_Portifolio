@@ -4,44 +4,8 @@ import { Heart, Github, Instagram, Code2, ArrowUp } from 'lucide-react'
 import { useLanguage } from '../components/ui/languageContext' // hook do contexto de idioma
 
 const Footer = () => {
-  const { language } = useLanguage()
-
-  const texts = {
-    pt: {
-      description:
-        'Desenvolvedor Full Stack & Especialista em UX Design apaixonado por criar soluções inovadoras com tecnologias de ponta.',
-      quickLinks: 'Links Rápidos',
-      links: [
-        { name: 'Sobre', href: '#about' },
-        { name: 'Habilidades', href: '#skills' },
-        { name: 'Projetos', href: '#projects' },
-        { name: 'Contato', href: '#contact' },
-      ],
-      techStack: 'Tecnologias',
-      copyright: (year) =>
-        `© ${year} Rafael Perez Silva. Feito com`,
-      built: 'Design e Desenvolvimento por Rafael',
-      funFact: '"Tecnologia não é apenas minha profissão, é minha paixão" - Rafael',
-    },
-    en: {
-      description:
-        'Full Stack Developer & UX Design Specialist passionate about creating innovative solutions with cutting-edge technologies.',
-      quickLinks: 'Quick Links',
-      links: [
-        { name: 'About', href: '#about' },
-        { name: 'Skills', href: '#skills' },
-        { name: 'Projects', href: '#projects' },
-        { name: 'Contact', href: '#contact' },
-      ],
-      techStack: 'Tech Stack',
-      copyright: (year) =>
-        `© ${year} Rafael Perez Silva. Made with`,
-      built: 'Designed & Built by Rafael',
-      funFact: '"Technology is not just my profession, it\'s my passion" - Rafael',
-    },
-  }
-
-  const t = texts[language]
+  const { getSection } = useLanguage()
+  const t = getSection('footer')
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -165,7 +129,7 @@ const Footer = () => {
               transition={{ duration: 0.6 }}
               className="text-cyber-off-white text-sm flex items-center"
             >
-              {t.copyright(currentYear)}{' '}
+              {t.copyrightPrefix.replace('{year}', String(currentYear))}{' '}
               <motion.span
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}

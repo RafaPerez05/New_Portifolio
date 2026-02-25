@@ -1,71 +1,12 @@
 import React, { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Mail, Send, User, MessageSquare, Instagram, Github, MapPin, Phone } from 'lucide-react'
-import { useLanguage } from '../components/ui/languageContext' // hook do contexto de idioma
+import { useLanguage } from '../components/ui/languageContext'
 import emailjs from '@emailjs/browser'
 
-const texts = {
-  en: {
-    header: "Get In Touch",
-    subtitle: "Ready to start your next project? Let's create something amazing together.",
-    sendMessage: "Send me a message",
-    name: "Name",
-    email: "Email",
-    message: "Message",
-    placeholderName: "Your name",
-    placeholderEmail: "your.email@example.com",
-    placeholderMessage: "Tell me about your project or just say hello...",
-    sendButton: "Send Message",
-    success: "Message sent successfully! I'll get back to you soon.",
-    connect: "Let's Connect",
-    connectText: "I'm always interested in new opportunities and exciting projects. Whether you have a question about my work, want to collaborate, or just want to say hello, feel free to reach out!",
-    location: "Location",
-    locationValue: "Presidente Prudente, SP, Brazil",
-    emailInfo: "Email",
-    emailValue: "Available upon request",
-    response: "Response Time",
-    responseValue: "Usually within 24 hours",
-    follow: "Follow Me",
-    available: "Available for projects",
-    availableText: "Open to freelance opportunities and collaborations",
-    socials: {
-      github: "Check out my code",
-      instagram: "Follow my journey"
-    }
-  },
-  pt: {
-    header: "Entre em Contato",
-    subtitle: "Pronto para começar seu próximo projeto? Vamos criar algo incrível juntos.",
-    sendMessage: "Envie-me uma mensagem",
-    name: "Nome",
-    email: "Email",
-    message: "Mensagem",
-    placeholderName: "Seu nome",
-    placeholderEmail: "seu.email@exemplo.com",
-    placeholderMessage: "Me conte sobre seu projeto ou apenas diga olá...",
-    sendButton: "Enviar Mensagem",
-    success: "Mensagem enviada com sucesso! Retornarei em breve.",
-    connect: "Vamos Conversar",
-    connectText: "Estou sempre interessado em novas oportunidades e projetos empolgantes. Se você tem uma dúvida sobre meu trabalho, quer colaborar ou apenas dizer olá, sinta-se à vontade para entrar em contato!",
-    location: "Localização",
-    locationValue: "Presidente Prudente, SP, Brasil",
-    emailInfo: "Email",
-    emailValue: "Disponível sob solicitação",
-    response: "Tempo de Resposta",
-    responseValue: "Normalmente dentro de 24 horas",
-    follow: "Siga-me",
-    available: "Disponível para projetos",
-    availableText: "Aberto a oportunidades freelancer e colaborações",
-    socials: {
-      github: "Veja meu código",
-      instagram: "Acompanhe minha jornada"
-    }
-  }
-}
-
 const Contact = () => {
-  const { language } = useLanguage()
-  const t = texts[language]
+  const { getSection } = useLanguage()
+  const t = getSection('contact')
 
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.2 })
@@ -84,7 +25,7 @@ const handleSubmit = async (e) => {
 
   try {
     const result = await emailjs.send(
-      "service_6r2soet", // seu Service ID
+      "service_gbk1itu", // seu Service ID
       "template_2t36qrj", // seu Template ID
       {
         from_name: formData.name,
@@ -99,7 +40,7 @@ const handleSubmit = async (e) => {
     setFormData({ name: '', email: '', message: '' })
   } catch (error) {
     console.error("Erro ao enviar:", error)
-    setSubmitStatus("Erro ao enviar. Tente novamente mais tarde.")
+    setSubmitStatus(t.errorSending)
   } finally {
     setIsSubmitting(false)
     setTimeout(() => setSubmitStatus(''), 5000)
