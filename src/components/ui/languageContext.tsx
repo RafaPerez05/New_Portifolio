@@ -10,7 +10,7 @@ interface LanguageContextProps {
   toggleLanguage: () => void
   setLanguage: (lang: Language) => void
   /** Retorna os textos da seção no idioma atual. EN é automático (cache ou API). */
-  getSection: (section: SectionKey) => Translations[SectionKey]
+  getSection: <K extends SectionKey>(section: K) => Translations[K]
   /** True enquanto as traduções EN estão sendo carregadas da API (primeira vez sem cache) */
   isLoadingTranslations: boolean
   /** Progresso da tradução: [concluídos, total] */
@@ -67,12 +67,15 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [language, ensureEnLoaded])
 
-  const getSection = useCallback((section: SectionKey): Translations[SectionKey] => {
-    if (language === 'pt') {
-      return source[section]
-    }
-    return (enTranslations ?? source)[section]
-  }, [language, enTranslations])
+  const getSection = useCallback(
+    <K extends SectionKey>(section: K): Translations[K] => {
+      if (language === 'pt') {
+        return source[section]
+      }
+      return (enTranslations ?? source)[section]
+    },
+    [language, enTranslations]
+  )
 
   return (
     <LanguageContext.Provider
